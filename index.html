@@ -7,14 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Alfa+Slab+One&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100%; min-height: 100vh; }
+html, body { width: 100vw; min-height: 100vh; overflow-x: visible; }
 
 body {
   background: #3d0810;
   display: flex; align-items: center; justify-content: center;
   min-height: 100vh;
   font-family: 'Cormorant Garamond', serif;
-  overflow-x: hidden;
 }
 
 .bg {
@@ -36,7 +35,7 @@ body {
   align-items: center; justify-content: center;
   min-height: 100vh; padding: 2rem 4rem;
   text-align: center; width: 100%;
-  gap: 0;
+  gap: 0; overflow: visible;
 }
 
 /* ── STEP 1: "The Ol' Skool" scrawls in FIRST ── */
@@ -45,6 +44,7 @@ body {
   animation: fadeIn 0.1s forwards 0.1s;
   margin-bottom: 0.6rem;
   line-height: 1;
+  overflow: visible;
 }
 @keyframes fadeIn { to { opacity: 1; } }
 
@@ -53,7 +53,7 @@ body {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 0.4em;
+  gap: 0.35em;
   white-space: nowrap;
   overflow: visible;
   padding: 0 0.5rem;
@@ -61,7 +61,7 @@ body {
 
 .drop-word {
   font-family: 'Alfa Slab One', serif;
-  font-size: clamp(30px, 6.5vw, 86px);
+  font-size: clamp(60px, 8vw, 120px);
   line-height: 1;
   letter-spacing: 0.03em;
   background: linear-gradient(160deg, #f0dc78 0%, #c88c1a 28%, #eece54 56%, #a06810 100%);
@@ -96,17 +96,20 @@ body {
 /* Logo appears at 5.6s */
 
 .logo-wrap {
-  width: clamp(140px, 20vw, 220px);
+  width: clamp(220px, 25vw, 320px);
   aspect-ratio: 2 / 3;
   opacity: 0;
   margin-bottom: 0.4rem;
   animation: logoRise 1.4s cubic-bezier(0.18, 1.1, 0.4, 1) forwards 5.6s;
-  height: 0;
+  max-height: 0;
   overflow: hidden;
+  background: none;
+  border: none;
 }
 .logo-wrap img {
   width: 100%; height: 100%;
   object-fit: contain;
+  display: block;
 }
 @keyframes logoRise {
   0%   { opacity: 0; transform: translateY(40px) scale(0.75); }
@@ -141,8 +144,8 @@ body {
 .bottom { opacity: 0; animation: fadeIn 0.8s ease forwards 7.8s; text-align: center; }
 .coming-label {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 11px; font-weight: 600;
-  color: #9a6828;
+  font-size: 13px; font-weight: 600;
+  color: #c89030;
   text-transform: uppercase; letter-spacing: 0.65em;
   margin-bottom: 0.9rem;
 }
@@ -184,19 +187,19 @@ body {
 }
 .social-link {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 11px; font-weight: 600;
-  color: #8a6030;
+  font-size: 13px; font-weight: 600;
+  color: #c89030;
   text-transform: uppercase; letter-spacing: 0.3em;
   text-decoration: none; transition: color 0.2s;
-  border-bottom: 1px solid rgba(138,96,48,0.4); padding-bottom: 1px;
+  border-bottom: 1px solid rgba(200,144,48,0.5); padding-bottom: 1px;
 }
-.social-link:hover { color: #c89030; }
+.social-link:hover { color: #f0d870; }
 
 /* ── TAGLINE ── */
 .tagline {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 12px; font-style: italic;
-  color: #8a6030;
+  font-size: 13px; font-style: italic;
+  color: #c89030;
   letter-spacing: 0.14em; margin-top: 1.2rem;
   opacity: 0; animation: fadeIn 0.7s ease forwards 8.7s;
 }
@@ -303,7 +306,7 @@ body {
 // ── Expand logo wrapper just before its animation fires ──
 setTimeout(function() {
   var lw = document.getElementById('logoWrap');
-  lw.style.height = '';
+  lw.style.maxHeight = '';
   lw.style.overflow = '';
 }, 5400);
 
