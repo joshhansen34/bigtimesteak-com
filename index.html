@@ -36,7 +36,7 @@ body {
   background: radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.6) 100%);
 }
 
-/* ── MAIN STAGE ── */
+/* ── STAGE ── */
 .stage {
   position: relative; z-index: 2;
   display: flex;
@@ -45,65 +45,73 @@ body {
   justify-content: center;
   min-height: 100vh;
   width: 100%;
-  padding: 3rem 5%;
+  /* generous padding so nothing ever clips */
+  padding: 60px 5% 40px;
   text-align: center;
-  overflow: visible;
+  gap: 0;
 }
 
-/* ── STEP 1: THE OL' SKOOL ── */
+/* ── THE OL' SKOOL ── */
+/* Sits in fixed position at top — never moves, never clips */
 .arch-wrap {
   opacity: 0;
   animation: fadeIn 0.1s forwards 0.1s;
   width: 100%;
   overflow: visible;
-  margin-bottom: 1.5rem;
+  /* fixed margin below so it never crowds next element */
+  margin-bottom: 24px;
+  /* extra top padding so the top of the cursive letters never clips */
+  padding-top: 20px;
 }
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* ── STEP 5: LOGO — hidden until after BTS drops ── */
+/* ── LOGO — hidden until after words + Club land ── */
 .logo-wrap {
-  width: clamp(180px, 22vw, 280px);
+  width: clamp(180px, 20vw, 260px);
   opacity: 0;
-  margin-bottom: 1rem;
-  /* completely removed from layout until JS unhides it */
+  overflow: visible;
+  margin-bottom: 20px;
+  /* take up zero layout space until revealed */
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0s;
+}
+.logo-wrap.visible {
+  max-height: 400px;
+  animation: logoRise 1s cubic-bezier(0.18, 1.1, 0.4, 1) forwards;
 }
 .logo-wrap img {
   width: 100%;
   height: auto;
   display: block;
-  /* transparent PNG — no background needed */
-}
-.logo-wrap.visible {
-  max-height: 400px;
-  animation: logoRise 1.2s cubic-bezier(0.18, 1.1, 0.4, 1) forwards;
+  /* transparent PNG — no background, no blend mode needed */
 }
 @keyframes logoRise {
-  0%   { opacity: 0; transform: translateY(30px) scale(0.8); }
+  0%   { opacity: 0; transform: scale(0.82) translateY(20px); }
   60%  { opacity: 1; }
-  85%  { transform: translateY(-5px) scale(1.03); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  85%  { transform: scale(1.03) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* ── STEPS 2-4: BIG TIME STEAK ── */
+/* ── BIG TIME STEAK ── */
 .wordmark-stage {
   display: flex;
   flex-direction: row;
   align-items: baseline;
   justify-content: center;
-  gap: 0.3em;
+  /* controlled gap — words clearly separated, not cramped, not huge */
+  gap: 0.28em;
   width: 100%;
   overflow: visible;
-  padding: 0 2%;
+  /* padding so ascenders/descenders never clip */
+  padding: 10px 4% 4px;
+  margin-bottom: 16px;
 }
 
 .drop-word {
   font-family: 'Alfa Slab One', serif;
-  /* size is relative to viewport, never clips */
-  font-size: clamp(36px, 5.5vw, 80px);
-  line-height: 1.1;
+  /* conservative size — fills screen without ever clipping */
+  font-size: clamp(32px, 4.8vw, 72px);
+  line-height: 1.15;
   letter-spacing: 0.02em;
   background: linear-gradient(160deg, #f0dc78 0%, #c88c1a 28%, #eece54 56%, #a06810 100%);
   -webkit-background-clip: text;
@@ -112,20 +120,21 @@ body {
   filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8));
   display: inline-block;
   opacity: 0;
-  transform: translateY(-200px);
+  transform: translateY(-180px);
   overflow: visible;
-  /* extra padding so descenders/ascenders never clip */
-  padding: 0.1em 0.05em;
+  /* extra breathing room so no letter clips */
+  padding: 0.12em 0.06em;
 }
 
-.word-big   { animation: wordDrop 0.6s cubic-bezier(0.22,1.4,0.4,1) forwards 2.8s,  wordFlash 0.4s ease forwards 3.37s; }
-.word-time  { animation: wordDrop 0.6s cubic-bezier(0.22,1.4,0.4,1) forwards 3.6s,  wordFlash 0.4s ease forwards 4.17s; }
-.word-steak { animation: wordDrop 0.65s cubic-bezier(0.22,1.4,0.4,1) forwards 4.4s, wordFlash 0.4s ease forwards 5.02s; }
+/* words spaced 0.8s apart — enough time to land before next drops */
+.word-big   { animation: wordDrop 0.65s cubic-bezier(0.22,1.4,0.4,1) forwards 1.0s,  wordFlash 0.4s ease forwards 1.62s; }
+.word-time  { animation: wordDrop 0.65s cubic-bezier(0.22,1.4,0.4,1) forwards 1.8s,  wordFlash 0.4s ease forwards 2.42s; }
+.word-steak { animation: wordDrop 0.65s cubic-bezier(0.22,1.4,0.4,1) forwards 2.6s,  wordFlash 0.4s ease forwards 3.22s; }
 
 @keyframes wordDrop {
-  0%   { opacity: 0; transform: translateY(-200px); }
-  55%  { opacity: 1; transform: translateY(7px); }
-  75%  { transform: translateY(-4px); }
+  0%   { opacity: 0; transform: translateY(-180px); }
+  55%  { opacity: 1; transform: translateY(6px); }
+  75%  { transform: translateY(-3px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes wordFlash {
@@ -133,16 +142,18 @@ body {
   100% { filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8)); }
 }
 
-/* ── CLUB ── */
+/* ── CLUB — appears immediately after Steak lands ── */
 .club-wrap {
-  opacity: 0; transform: translateY(5px);
-  animation: clubUp 0.7s ease forwards 7.0s;
-  margin-top: 0.4rem;
+  opacity: 0;
+  transform: translateY(4px);
+  /* Steak finishes at ~3.3s, Club appears right after */
+  animation: clubUp 0.5s ease forwards 3.4s;
+  margin-bottom: 20px;
 }
 @keyframes clubUp { to { opacity: 1; transform: translateY(0); } }
 .club-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(13px, 1.8vw, 22px);
+  font-size: clamp(13px, 1.6vw, 20px);
   font-weight: 600;
   color: #9a6828;
   text-transform: uppercase;
@@ -151,25 +162,27 @@ body {
 
 /* ── DIVIDER ── */
 .divider {
-  width: 90px; height: 1px;
+  width: 80px; height: 1px;
   background: linear-gradient(90deg, transparent, #8a5820, transparent);
-  margin: 1.4rem auto 1.1rem;
+  margin-bottom: 20px;
   opacity: 0;
-  animation: fadeIn 0.7s ease forwards 7.5s;
+  /* appears after logo settles */
+  animation: fadeIn 0.7s ease forwards 5.8s;
 }
 
 /* ── COMING SOON + EMAIL ── */
 .bottom {
   opacity: 0;
-  animation: fadeIn 0.8s ease forwards 7.8s;
+  animation: fadeIn 0.7s ease forwards 6.1s;
   text-align: center;
+  margin-bottom: 14px;
 }
 .coming-label {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 13px; font-weight: 600;
+  font-size: 12px; font-weight: 600;
   color: #c89030;
-  text-transform: uppercase; letter-spacing: 0.65em;
-  margin-bottom: 1rem;
+  text-transform: uppercase; letter-spacing: 0.6em;
+  margin-bottom: 14px;
 }
 .email-row {
   display: inline-flex;
@@ -177,13 +190,13 @@ body {
   overflow: hidden;
 }
 .email-row input[type="email"] {
-  width: 210px;
+  width: 200px;
   background: rgba(45,6,10,0.95);
   border: none; outline: none;
   color: #d4a040;
   font-family: 'Cormorant Garamond', serif;
   font-size: 13px;
-  padding: 10px 16px;
+  padding: 9px 14px;
   -webkit-appearance: none;
   -webkit-box-shadow: 0 0 0 1000px rgba(45,6,10,0.98) inset;
   -webkit-text-fill-color: #d4a040;
@@ -195,8 +208,8 @@ body {
   color: #f0d878;
   font-family: 'Cormorant Garamond', serif;
   font-size: 10px; font-weight: 600;
-  letter-spacing: 0.25em; text-transform: uppercase;
-  padding: 10px 18px; cursor: pointer; white-space: nowrap;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 9px 16px; cursor: pointer; white-space: nowrap;
   transition: background 0.2s;
 }
 .email-row button:hover { background: #8a2e18; }
@@ -204,14 +217,14 @@ body {
 /* ── SOCIAL ── */
 .social-row {
   display: flex; gap: 1.4rem; justify-content: center;
-  margin-top: 1.1rem;
-  opacity: 0; animation: fadeIn 0.7s ease forwards 8.3s;
+  margin-bottom: 12px;
+  opacity: 0; animation: fadeIn 0.7s ease forwards 6.5s;
 }
 .social-link {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 12px; font-weight: 600;
+  font-size: 11px; font-weight: 600;
   color: #c89030;
-  text-transform: uppercase; letter-spacing: 0.3em;
+  text-transform: uppercase; letter-spacing: 0.28em;
   text-decoration: none;
   border-bottom: 1px solid rgba(200,144,48,0.4); padding-bottom: 1px;
   transition: color 0.2s;
@@ -221,10 +234,10 @@ body {
 /* ── TAGLINE ── */
 .tagline {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 13px; font-style: italic;
+  font-size: 12px; font-style: italic;
   color: #c89030;
-  letter-spacing: 0.14em; margin-top: 1.2rem;
-  opacity: 0; animation: fadeIn 0.7s ease forwards 8.7s;
+  letter-spacing: 0.13em;
+  opacity: 0; animation: fadeIn 0.7s ease forwards 6.8s;
 }
 </style>
 </head>
@@ -235,11 +248,12 @@ body {
 
 <div class="stage">
 
-  <!-- STEP 1: The Ol' Skool writes itself in -->
+  <!-- THE OL' SKOOL: writes itself in immediately -->
+  <!-- SVG has overflow:visible and padding-top on wrapper so top of cursive never clips -->
   <div class="arch-wrap">
-    <svg id="archSvg" overflow="visible"
-         viewBox="0 0 700 90"
-         style="width: clamp(300px, 60vw, 700px); height: auto; display: block; margin: 0 auto; overflow: visible;">
+    <svg overflow="visible"
+         viewBox="0 0 700 95"
+         style="width: clamp(300px, 58vw, 680px); height: auto; display: block; margin: 0 auto; overflow: visible;">
       <defs>
         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%"   stop-color="#f4e080"/>
@@ -247,16 +261,18 @@ body {
           <stop offset="62%"  stop-color="#ecd058"/>
           <stop offset="100%" stop-color="#a47010"/>
         </linearGradient>
-        <filter id="goldGlow" x="-10%" y="-10%" width="120%" height="120%">
+        <filter id="goldGlow" x="-15%" y="-40%" width="130%" height="180%">
           <feGaussianBlur stdDeviation="2.5" result="b"/>
           <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
         <clipPath id="writeClip">
-          <rect id="clipRect" x="-10" y="-80" width="0" height="250"/>
+          <!-- y and height are generous so nothing clips during animation -->
+          <rect id="clipRect" x="-20" y="-100" width="0" height="300"/>
         </clipPath>
       </defs>
-      <path id="archPath" d="M 20,84 Q 350,-18 680,84" fill="none"/>
-      <text font-family="Great Vibes, cursive" font-size="68"
+      <!-- arch path: starts low enough that full ascenders of Great Vibes are visible -->
+      <path id="archPath" d="M 20,90 Q 350,-5 680,90" fill="none"/>
+      <text font-family="Great Vibes, cursive" font-size="72"
             fill="url(#goldGrad)" filter="url(#goldGlow)"
             clip-path="url(#writeClip)">
         <textPath href="#archPath" startOffset="50%" text-anchor="middle">The Ol' Skool</textPath>
@@ -264,21 +280,24 @@ body {
     </svg>
   </div>
 
-  <!-- STEP 5: Logo appears ABOVE wordmark after BTS morph (hidden until JS fires) -->
-  <!-- osbtsc_logo_transparent.png must be in same directory — transparent background already -->
+  <!-- LOGO: hidden (max-height:0) until JS fires after Club appears -->
+  <!-- Uses osbtsc_logo_transparent.png — transparent background, no mix-blend-mode needed -->
   <div class="logo-wrap" id="logoWrap">
     <img src="osbtsc_logo_transparent.png" alt="The Ol' Skool Big Time Steak Club"/>
   </div>
 
-  <!-- STEPS 2-4: Big, Time, Steak drop in one at a time -->
+  <!-- BIG TIME STEAK: three words drop one at a time -->
   <div class="wordmark-stage">
     <span class="drop-word word-big"   id="wBig">Big</span>
     <span class="drop-word word-time"  id="wTime">Time</span>
     <span class="drop-word word-steak" id="wSteak">Steak</span>
   </div>
 
-  <!-- STEP 6: Club -->
+  <!-- CLUB: appears immediately after Steak lands (3.4s) -->
   <div class="club-wrap"><span class="club-text">Club</span></div>
+
+  <!-- LOGO drops in after Club (4.2s), pushing everything below it down -->
+  <!-- divider + bottom fade in after logo settles -->
 
   <div class="divider"></div>
 
@@ -301,10 +320,10 @@ body {
 </div>
 
 <script>
-// STEP 1: Animate "The Ol' Skool" writing itself in — starts immediately, 2.4s duration
+// THE OL' SKOOL: write-on animation starts immediately, takes 2.4s
 (function() {
   var clipRect = document.getElementById('clipRect');
-  var totalWidth = 720;
+  var totalWidth = 740;
   var duration = 2400;
   var startTime = null;
   function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
@@ -317,33 +336,35 @@ body {
   requestAnimationFrame(animate);
 })();
 
-// STEP 5: At 5.3s — flash BTS words gold then dim them (morph effect)
-// At 5.6s — logo rises up into place above wordmark
+// MORPH: at 3.6s (just after Club appears) — flash BTS words gold then dim them
+// This signals the BTS letters are "becoming" the logo
 setTimeout(function() {
   ['wBig','wTime','wSteak'].forEach(function(id) {
     var el = document.getElementById(id);
     el.style.filter = 'drop-shadow(0 4px 16px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(255,210,80,1))';
     setTimeout(function() {
       el.style.transition = 'opacity 0.9s ease, filter 0.6s ease';
-      el.style.opacity = '0.25';
+      el.style.opacity = '0.22';
       el.style.filter = 'drop-shadow(0 4px 16px rgba(0,0,0,0.8))';
-    }, 180);
+    }, 200);
   });
-}, 5300);
+}, 3700);
 
+// LOGO RISE: at 4.2s — logo rises up into place between Ol' Skool and wordmark
 setTimeout(function() {
   var logo = document.getElementById('logoWrap');
+  logo.style.overflow = 'visible';
   logo.classList.add('visible');
-}, 5600);
+}, 4200);
 
-// STEP 7: Restore words to full opacity after logo settles
+// RESTORE WORDS: after logo settles, words come back to full opacity
 setTimeout(function() {
   ['wBig','wTime','wSteak'].forEach(function(id) {
     var el = document.getElementById(id);
     el.style.transition = 'opacity 1s ease';
     el.style.opacity = '1';
   });
-}, 7100);
+}, 5500);
 </script>
 
 </body>
