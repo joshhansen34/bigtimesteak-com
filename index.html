@@ -55,14 +55,17 @@ body {
 /* ── THE OL' SKOOL ── */
 /* Sits in fixed position at top — never moves, never clips */
 .arch-wrap {
-  opacity: 0;
-  animation: fadeIn 0.1s forwards 0.1s;
   width: auto;
   display: block;
   height: auto;
   overflow: visible;
   padding-top: 20px;
   padding-right: 60px;
+  clip-path: inset(0 101% 0 0);
+  animation: archReveal 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.1s;
+}
+@keyframes archReveal {
+  to { clip-path: inset(-30% -30% -30% -30%); }
 }
 @keyframes fadeIn { to { opacity: 1; } }
 
@@ -263,16 +266,11 @@ body {
           <feGaussianBlur stdDeviation="2.5" result="b"/>
           <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
-        <clipPath id="writeClip">
-          <!-- y and height are generous so nothing clips during animation -->
-          <rect id="clipRect" x="-20" y="-100" width="0" height="300"/>
-        </clipPath>
       </defs>
       <!-- arch path: starts low enough that full ascenders of Great Vibes are visible -->
       <path id="archPath" d="M 40,100 Q 350,0 660,100" fill="none"/>
       <text font-family="Great Vibes, cursive" font-size="56"
-            fill="url(#goldGrad)" filter="url(#goldGlow)"
-            clip-path="url(#writeClip)">
+            fill="url(#goldGrad)" filter="url(#goldGlow)">
         <textPath href="#archPath" startOffset="50%" text-anchor="middle">The Ol' Skool</textPath>
       </text>
     </svg>
@@ -318,21 +316,6 @@ body {
 </div>
 
 <script>
-// THE OL' SKOOL: write-on animation starts immediately, takes 2.4s
-(function() {
-  var clipRect = document.getElementById('clipRect');
-  var totalWidth = 900;
-  var duration = 2400;
-  var startTime = null;
-  function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
-  function animate(ts) {
-    if (!startTime) startTime = ts;
-    var p = Math.min((ts - startTime) / duration, 1);
-    clipRect.setAttribute('width', ease(p) * totalWidth);
-    if (p < 1) requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-})();
 
 // MORPH: at 3.6s (just after Club appears) — flash BTS words gold then dim them
 // This signals the BTS letters are "becoming" the logo
