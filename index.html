@@ -55,11 +55,13 @@ body {
 /* ── THE OL' SKOOL ── */
 /* Sits in fixed position at top — never moves, never clips */
 .arch-wrap {
-  width: 100%;
+  width: auto;
   display: block;
   height: auto;
   overflow: visible;
-  padding-top: 20px;
+  padding: 20px 80px 0;
+  opacity: 0;
+  animation: fadeIn 2.4s ease forwards 0.1s;
 }
 @keyframes fadeIn { to { opacity: 1; } }
 
@@ -247,8 +249,8 @@ body {
   <!-- SVG has overflow:visible and padding-top on wrapper so top of cursive never clips -->
   <div class="arch-wrap">
     <svg overflow="visible"
-         viewBox="-120 -50 1040 200"
-         style="width: 95vw; max-width: 1000px; height: auto; display: block; margin: 0 auto; overflow: visible;">
+         viewBox="-120 -40 940 170"
+         style="width: clamp(300px, 58vw, 680px); height: auto; display: block; margin: 0 auto; overflow: visible;">
       <defs>
         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%"   stop-color="#f4e080"/>
@@ -260,16 +262,12 @@ body {
           <feGaussianBlur stdDeviation="2.5" result="b"/>
           <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
-        <clipPath id="writeClip">
-          <rect id="clipRect" x="-120" y="-100" width="0" height="400"/>
-        </clipPath>
       </defs>
-      <path id="archPath" d="M 60,120 Q 400,0 740,120" fill="none"/>
-      <text font-family="Great Vibes, cursive" font-size="52"
-            fill="url(#goldGrad)" filter="url(#goldGlow)"
-            clip-path="url(#writeClip)"
-            textLength="580" lengthAdjust="spacingAndGlyphs">
-        <textPath href="#archPath" startOffset="50%" text-anchor="middle">The Ol' Skool</textPath>
+      <path id="archPath" d="M -20,115 Q 350,-5 720,115" fill="none"/>
+      <text font-family="Great Vibes, cursive" font-size="56"
+            fill="url(#goldGrad)"
+            filter="url(#goldGlow)">
+        <textPath href="#archPath" startOffset="50%" text-anchor="middle" method="align" spacing="auto">The Ol' Skool</textPath>
       </text>
     </svg>
   </div>
@@ -314,21 +312,6 @@ body {
 </div>
 
 <script>
-// THE OL' SKOOL: write-on animation
-(function() {
-  var clipRect = document.getElementById('clipRect');
-  var totalWidth = 1100;
-  var duration = 2400;
-  var startTime = null;
-  function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
-  function animate(ts) {
-    if (!startTime) startTime = ts;
-    var p = Math.min((ts - startTime) / duration, 1);
-    clipRect.setAttribute('width', ease(p) * totalWidth);
-    if (p < 1) requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-})();
 
 // MORPH: at 3.6s (just after Club appears) — flash BTS words gold then dim them
 // This signals the BTS letters are "becoming" the logo
