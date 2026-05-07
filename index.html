@@ -290,9 +290,10 @@ body {
   <div class="bottom">
     <p class="coming-label">Coming Soon</p>
     <div class="email-row">
-      <input type="email" placeholder="Enter your email"/>
-      <button type="button">Join the Club</button>
+      <input type="email" id="emailInput" placeholder="Enter your email"/>
+      <button type="button" id="joinBtn">Join the Club</button>
     </div>
+    <p id="signupMsg" style="margin-top:10px;font-family:'Cormorant Garamond',serif;font-size:12px;color:#c89030;letter-spacing:0.1em;min-height:16px;"></p>
   </div>
 
   <div class="social-row">
@@ -336,6 +337,33 @@ setTimeout(function() {
     el.style.opacity = '1';
   });
 }, 5500);
+
+document.getElementById('joinBtn').addEventListener('click', async function() {
+  var email = document.getElementById('emailInput').value.trim();
+  var msg = document.getElementById('signupMsg');
+  var btn = this;
+
+  if (!email) { msg.textContent = 'Enter your email first.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    var res = await fetch('/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
+    var data = await res.json();
+    msg.textContent = data.message || 'Welcome to the club.';
+    document.getElementById('emailInput').value = '';
+  } catch(e) {
+    msg.textContent = 'Something went wrong. Try again.';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Join the Club';
+});
 </script>
 
 </body>
