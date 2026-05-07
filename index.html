@@ -55,13 +55,29 @@ body {
 /* ── THE OL' SKOOL ── */
 /* Sits in fixed position at top — never moves, never clips */
 .arch-wrap {
-  width: auto;
-  display: block;
-  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   overflow: visible;
-  padding: 20px 80px 0;
+  padding: 24px 120px 8px;
   opacity: 0;
   animation: fadeIn 2.4s ease forwards 0.1s;
+}
+.arch-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: visible;
+  padding: 0 40px 12px;
+  background: linear-gradient(160deg, #f4e080 0%, #c89020 28%, #ecd058 62%, #a47010 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter:
+    drop-shadow(0 0 5px rgba(244, 224, 128, 0.75))
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.65));
+  transform: rotate(-4deg);
 }
 @keyframes fadeIn { to { opacity: 1; } }
 
@@ -245,31 +261,8 @@ body {
 
 <div class="stage">
 
-  <!-- THE OL' SKOOL: writes itself in immediately -->
-  <!-- SVG has overflow:visible and padding-top on wrapper so top of cursive never clips -->
   <div class="arch-wrap">
-    <svg overflow="visible"
-         viewBox="-120 -40 940 170"
-         style="width: clamp(300px, 58vw, 680px); height: auto; display: block; margin: 0 auto; overflow: visible;">
-      <defs>
-        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   stop-color="#f4e080"/>
-          <stop offset="28%"  stop-color="#c89020"/>
-          <stop offset="62%"  stop-color="#ecd058"/>
-          <stop offset="100%" stop-color="#a47010"/>
-        </linearGradient>
-        <filter id="goldGlow" x="-20%" y="-60%" width="140%" height="220%">
-          <feGaussianBlur stdDeviation="2.5" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-      <path id="archPath" d="M -20,115 Q 350,-5 720,115" fill="none"/>
-      <text font-family="Great Vibes, cursive" font-size="56"
-            fill="url(#goldGrad)"
-            filter="url(#goldGlow)">
-        <textPath href="#archPath" startOffset="50%" text-anchor="middle" method="align" spacing="auto">The Ol' Skool</textPath>
-      </text>
-    </svg>
+    <div class="arch-title">The Ol' Skool</div>
   </div>
 
   <!-- LOGO: hidden (max-height:0) until JS fires after Club appears -->
