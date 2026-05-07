@@ -7,11 +7,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Alfa+Slab+One&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100vw; min-height: 100vh; overflow-x: visible; }
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
 body {
   background: #3d0810;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
   font-family: 'Cormorant Garamond', serif;
 }
@@ -29,41 +36,75 @@ body {
   background: radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.6) 100%);
 }
 
+/* ── MAIN STAGE ── */
 .stage {
   position: relative; z-index: 2;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  min-height: 100vh; padding: 2rem 4rem;
-  text-align: center; width: 100%;
-  gap: 0; overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 3rem 5%;
+  text-align: center;
+  overflow: visible;
 }
 
-/* ── STEP 1: "The Ol' Skool" scrawls in FIRST ── */
+/* ── STEP 1: THE OL' SKOOL ── */
 .arch-wrap {
   opacity: 0;
   animation: fadeIn 0.1s forwards 0.1s;
-  margin-bottom: 0.6rem;
-  line-height: 1;
+  width: 100%;
   overflow: visible;
+  margin-bottom: 1.5rem;
 }
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* ── STEP 2-4: Big, Time, Steak drop in one at a time ── */
+/* ── STEP 5: LOGO — hidden until after BTS drops ── */
+.logo-wrap {
+  width: clamp(180px, 22vw, 280px);
+  opacity: 0;
+  margin-bottom: 1rem;
+  /* completely removed from layout until JS unhides it */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0s;
+}
+.logo-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* transparent PNG — no background needed */
+}
+.logo-wrap.visible {
+  max-height: 400px;
+  animation: logoRise 1.2s cubic-bezier(0.18, 1.1, 0.4, 1) forwards;
+}
+@keyframes logoRise {
+  0%   { opacity: 0; transform: translateY(30px) scale(0.8); }
+  60%  { opacity: 1; }
+  85%  { transform: translateY(-5px) scale(1.03); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── STEPS 2-4: BIG TIME STEAK ── */
 .wordmark-stage {
   display: flex;
+  flex-direction: row;
   align-items: baseline;
   justify-content: center;
-  gap: 0.35em;
-  white-space: nowrap;
+  gap: 0.3em;
+  width: 100%;
   overflow: visible;
-  padding: 0 0.5rem;
+  padding: 0 2%;
 }
 
 .drop-word {
   font-family: 'Alfa Slab One', serif;
-  font-size: clamp(60px, 8vw, 120px);
-  line-height: 1;
-  letter-spacing: 0.03em;
+  /* size is relative to viewport, never clips */
+  font-size: clamp(36px, 5.5vw, 80px);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
   background: linear-gradient(160deg, #f0dc78 0%, #c88c1a 28%, #eece54 56%, #a06810 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -71,65 +112,41 @@ body {
   filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8));
   display: inline-block;
   opacity: 0;
-  transform: translateY(-220px) scaleY(1.12);
-  transition: opacity 0.8s ease, filter 0.5s ease;
+  transform: translateY(-200px);
+  overflow: visible;
+  /* extra padding so descenders/ascenders never clip */
+  padding: 0.1em 0.05em;
 }
 
-/* Big drops at 2.8s (after Ol Skool finishes writing ~2.5s) */
 .word-big   { animation: wordDrop 0.6s cubic-bezier(0.22,1.4,0.4,1) forwards 2.8s,  wordFlash 0.4s ease forwards 3.37s; }
 .word-time  { animation: wordDrop 0.6s cubic-bezier(0.22,1.4,0.4,1) forwards 3.6s,  wordFlash 0.4s ease forwards 4.17s; }
 .word-steak { animation: wordDrop 0.65s cubic-bezier(0.22,1.4,0.4,1) forwards 4.4s, wordFlash 0.4s ease forwards 5.02s; }
 
 @keyframes wordDrop {
-  0%   { opacity: 0; transform: translateY(-220px) scaleY(1.12); }
-  55%  { opacity: 1; transform: translateY(8px) scaleY(0.96); }
-  75%  { transform: translateY(-4px) scaleY(1.02); }
-  100% { opacity: 1; transform: translateY(0) scaleY(1); }
+  0%   { opacity: 0; transform: translateY(-200px); }
+  55%  { opacity: 1; transform: translateY(7px); }
+  75%  { transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes wordFlash {
-  0%   { filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8)) drop-shadow(0 0 32px rgba(255,210,80,0.8)); }
+  0%   { filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8)) drop-shadow(0 0 32px rgba(255,210,80,0.9)); }
   100% { filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8)); }
-}
-
-/* ── STEP 5: BTS morph — words dim, logo rises in ── */
-/* Words dim at 5.3s via JS */
-/* Logo appears at 5.6s */
-
-.logo-wrap {
-  width: clamp(220px, 25vw, 320px);
-  aspect-ratio: 2 / 3;
-  opacity: 0;
-  margin-bottom: 0.4rem;
-  animation: logoRise 1.4s cubic-bezier(0.18, 1.1, 0.4, 1) forwards 5.6s;
-  max-height: 0;
-  overflow: hidden;
-  background: none;
-  border: none;
-}
-.logo-wrap img {
-  width: 100%; height: 100%;
-  object-fit: contain;
-  display: block;
-}
-@keyframes logoRise {
-  0%   { opacity: 0; transform: translateY(40px) scale(0.75); }
-  50%  { opacity: 1; }
-  80%  { transform: translateY(-6px) scale(1.04); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ── CLUB ── */
 .club-wrap {
   opacity: 0; transform: translateY(5px);
   animation: clubUp 0.7s ease forwards 7.0s;
-  margin-top: 0.25rem;
+  margin-top: 0.4rem;
 }
 @keyframes clubUp { to { opacity: 1; transform: translateY(0); } }
 .club-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.8vw, 20px);
-  font-weight: 600; color: #9a6828;
-  text-transform: uppercase; letter-spacing: 0.55em;
+  font-size: clamp(13px, 1.8vw, 22px);
+  font-weight: 600;
+  color: #9a6828;
+  text-transform: uppercase;
+  letter-spacing: 0.55em;
 }
 
 /* ── DIVIDER ── */
@@ -137,17 +154,22 @@ body {
   width: 90px; height: 1px;
   background: linear-gradient(90deg, transparent, #8a5820, transparent);
   margin: 1.4rem auto 1.1rem;
-  opacity: 0; animation: fadeIn 0.7s ease forwards 7.5s;
+  opacity: 0;
+  animation: fadeIn 0.7s ease forwards 7.5s;
 }
 
-/* ── BOTTOM ── */
-.bottom { opacity: 0; animation: fadeIn 0.8s ease forwards 7.8s; text-align: center; }
+/* ── COMING SOON + EMAIL ── */
+.bottom {
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards 7.8s;
+  text-align: center;
+}
 .coming-label {
   font-family: 'Cormorant Garamond', serif;
   font-size: 13px; font-weight: 600;
   color: #c89030;
   text-transform: uppercase; letter-spacing: 0.65em;
-  margin-bottom: 0.9rem;
+  margin-bottom: 1rem;
 }
 .email-row {
   display: inline-flex;
@@ -155,8 +177,8 @@ body {
   overflow: hidden;
 }
 .email-row input[type="email"] {
-  width: 205px;
-  background: rgba(50,8,12,0.8);
+  width: 210px;
+  background: rgba(45,6,10,0.95);
   border: none; outline: none;
   color: #d4a040;
   font-family: 'Cormorant Garamond', serif;
@@ -187,13 +209,14 @@ body {
 }
 .social-link {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 13px; font-weight: 600;
+  font-size: 12px; font-weight: 600;
   color: #c89030;
   text-transform: uppercase; letter-spacing: 0.3em;
-  text-decoration: none; transition: color 0.2s;
-  border-bottom: 1px solid rgba(200,144,48,0.5); padding-bottom: 1px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200,144,48,0.4); padding-bottom: 1px;
+  transition: color 0.2s;
 }
-.social-link:hover { color: #f0d870; }
+.social-link:hover { color: #f0d878; }
 
 /* ── TAGLINE ── */
 .tagline {
@@ -212,11 +235,11 @@ body {
 
 <div class="stage">
 
-  <!-- STEP 1: The Ol' Skool scrawls in first -->
+  <!-- STEP 1: The Ol' Skool writes itself in -->
   <div class="arch-wrap">
     <svg id="archSvg" overflow="visible"
-         viewBox="0 0 560 82"
-         style="width: clamp(280px, 54vw, 560px); height: auto; display: block;">
+         viewBox="0 0 700 90"
+         style="width: clamp(300px, 60vw, 700px); height: auto; display: block; margin: 0 auto; overflow: visible;">
       <defs>
         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%"   stop-color="#f4e080"/>
@@ -224,16 +247,16 @@ body {
           <stop offset="62%"  stop-color="#ecd058"/>
           <stop offset="100%" stop-color="#a47010"/>
         </linearGradient>
-        <filter id="goldGlow">
+        <filter id="goldGlow" x="-10%" y="-10%" width="120%" height="120%">
           <feGaussianBlur stdDeviation="2.5" result="b"/>
           <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
         <clipPath id="writeClip">
-          <rect id="clipRect" x="-10" y="-80" width="0" height="200"/>
+          <rect id="clipRect" x="-10" y="-80" width="0" height="250"/>
         </clipPath>
       </defs>
-      <path id="archPath" d="M 20,76 Q 280,-16 540,76" fill="none"/>
-      <text font-family="Great Vibes, cursive" font-size="60"
+      <path id="archPath" d="M 20,84 Q 350,-18 680,84" fill="none"/>
+      <text font-family="Great Vibes, cursive" font-size="68"
             fill="url(#goldGrad)" filter="url(#goldGlow)"
             clip-path="url(#writeClip)">
         <textPath href="#archPath" startOffset="50%" text-anchor="middle">The Ol' Skool</textPath>
@@ -241,10 +264,10 @@ body {
     </svg>
   </div>
 
-  <!-- STEP 5: Logo rises up from wordmark after BTS morph -->
-  <!-- NOTE FOR CLAUDE CODE: osbtsc_logo.png must be in same directory as this file -->
+  <!-- STEP 5: Logo appears ABOVE wordmark after BTS morph (hidden until JS fires) -->
+  <!-- osbtsc_logo_transparent.png must be in same directory — transparent background already -->
   <div class="logo-wrap" id="logoWrap">
-    <img src="osbtsc_logo_transparent.png" alt="The Ol' Skool Big Time Steak Club Logo"/>
+    <img src="osbtsc_logo_transparent.png" alt="The Ol' Skool Big Time Steak Club"/>
   </div>
 
   <!-- STEPS 2-4: Big, Time, Steak drop in one at a time -->
@@ -254,7 +277,7 @@ body {
     <span class="drop-word word-steak" id="wSteak">Steak</span>
   </div>
 
-  <!-- STEP 6: Club fades in -->
+  <!-- STEP 6: Club -->
   <div class="club-wrap"><span class="club-text">Club</span></div>
 
   <div class="divider"></div>
@@ -278,56 +301,44 @@ body {
 </div>
 
 <script>
-// ── Animate "The Ol' Skool" writing itself in ──
-// Starts immediately, takes 2.4s — Big drops at 2.8s
+// STEP 1: Animate "The Ol' Skool" writing itself in — starts immediately, 2.4s duration
 (function() {
   var clipRect = document.getElementById('clipRect');
-  var totalWidth = 580;
-  var duration = 2400; // ms
+  var totalWidth = 720;
+  var duration = 2400;
   var startTime = null;
-
-  function easeInOut(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  }
-
+  function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
   function animate(ts) {
     if (!startTime) startTime = ts;
-    var elapsed = ts - startTime;
-    var progress = Math.min(elapsed / duration, 1);
-    var eased = easeInOut(progress);
-    clipRect.setAttribute('width', eased * totalWidth);
-    if (progress < 1) requestAnimationFrame(animate);
+    var p = Math.min((ts - startTime) / duration, 1);
+    clipRect.setAttribute('width', ease(p) * totalWidth);
+    if (p < 1) requestAnimationFrame(animate);
   }
-
-  // Start writing immediately
   requestAnimationFrame(animate);
 })();
 
-// ── Expand logo wrapper just before its animation fires ──
+// STEP 5: At 5.3s — flash BTS words gold then dim them (morph effect)
+// At 5.6s — logo rises up into place above wordmark
 setTimeout(function() {
-  var lw = document.getElementById('logoWrap');
-  lw.style.maxHeight = '';
-  lw.style.overflow = '';
-}, 5400);
-
-// ── Morph: dim BTS words as logo rises ──
-// Steak finishes landing ~5.1s, so dim at 5.3s
-setTimeout(function() {
-  ['wBig', 'wTime', 'wSteak'].forEach(function(id) {
+  ['wBig','wTime','wSteak'].forEach(function(id) {
     var el = document.getElementById(id);
-    // Brief gold flash
     el.style.filter = 'drop-shadow(0 4px 16px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(255,210,80,1))';
     setTimeout(function() {
       el.style.transition = 'opacity 0.9s ease, filter 0.6s ease';
-      el.style.opacity = '0.28';
+      el.style.opacity = '0.25';
       el.style.filter = 'drop-shadow(0 4px 16px rgba(0,0,0,0.8))';
-    }, 150);
+    }, 180);
   });
 }, 5300);
 
-// ── Restore words to full opacity after logo is settled ──
 setTimeout(function() {
-  ['wBig', 'wTime', 'wSteak'].forEach(function(id) {
+  var logo = document.getElementById('logoWrap');
+  logo.classList.add('visible');
+}, 5600);
+
+// STEP 7: Restore words to full opacity after logo settles
+setTimeout(function() {
+  ['wBig','wTime','wSteak'].forEach(function(id) {
     var el = document.getElementById(id);
     el.style.transition = 'opacity 1s ease';
     el.style.opacity = '1';
