@@ -8,14 +8,6 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── DEBUG BORDERS ── */
-.stage, .arch-wrap, .logo-wrap, .wordmark-stage,
-.drop-word, .club-wrap, .club-text, .divider,
-.bottom, .coming-label, .email-row,
-.email-row input, .email-row button,
-.social-row, .social-link, .tagline {
-  outline: 1px solid red;
-}
 
 html, body {
   width: 100%;
@@ -57,7 +49,7 @@ body {
   /* generous padding so nothing ever clips */
   padding: 60px 5% 40px;
   text-align: center;
-  gap: 0;
+  gap: 16px;
 }
 
 /* ── THE OL' SKOOL ── */
@@ -65,11 +57,10 @@ body {
 .arch-wrap {
   opacity: 0;
   animation: fadeIn 0.1s forwards 0.1s;
-  width: 100%;
+  width: auto;
+  display: block;
+  height: auto;
   overflow: visible;
-  /* fixed margin below so it never crowds next element */
-  margin-bottom: 24px;
-  /* extra top padding so the top of the cursive letters never clips */
   padding-top: 20px;
 }
 @keyframes fadeIn { to { opacity: 1; } }
@@ -107,13 +98,10 @@ body {
   flex-direction: row;
   align-items: baseline;
   justify-content: center;
-  /* controlled gap — words clearly separated, not cramped, not huge */
   gap: 0.28em;
-  width: 100%;
+  height: auto;
   overflow: visible;
-  /* padding so ascenders/descenders never clip */
-  padding: 10px 4% 4px;
-  margin-bottom: 16px;
+  padding: 20px 0;
 }
 
 .drop-word {
@@ -131,8 +119,8 @@ body {
   opacity: 0;
   transform: translateY(-180px);
   overflow: visible;
-  /* extra breathing room so no letter clips */
-  padding: 0.12em 0.06em;
+  line-height: 1.3;
+  padding: 10px 8px;
 }
 
 /* words spaced 0.8s apart — enough time to land before next drops */
